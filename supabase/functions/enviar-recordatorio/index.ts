@@ -67,7 +67,7 @@ Deno.serve(async (req) => {
         await supabase
           .from('confirmaciones')
           .update({ recordatorio_enviado: true })
-          .eq('id', invitado.id)
+          .eq('email', invitado.email)
 
         resultados.push({ email: invitado.email, status: 'enviado' })
       } else {
