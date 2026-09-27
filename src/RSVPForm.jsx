@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
+import { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient.js';
 import emailjs from '@emailjs/browser';
 
-const LIMITE_INVITADOS = 160;
+const LIMITE_INVITADOS = 0;
 
 const RSVPForm = () => {
   const [name, setName] = useState('');
@@ -117,7 +117,7 @@ const RSVPForm = () => {
   if (cupoLleno && status !== 'success') {
     return (
       <div className="rsvp-success">
-        <p>Cupo completo</p>
+        <p>Cupos completos</p>
         <p className="success-sub">
           Lo sentimos, hemos alcanzado el límite de invitados para este evento. 
           Gracias por tu interés en acompañarnos.

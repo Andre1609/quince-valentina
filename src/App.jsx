@@ -299,7 +299,7 @@ function App() {
           {/* RSVP */}
           <section className="rsvp">
             <p className="eyebrow">Confirma tu Asistencia</p>
-            <p className="rsvp-sub">Por favor confirmar antes del 06/09/2026</p>
+            <p className="rsvp-sub">Por favor confirmar antes del 25/09/2026</p>
             <RSVPForm />
           </section>
 
