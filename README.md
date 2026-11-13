@@ -2,8 +2,11 @@
 
 Invitación web interactiva para unos XV años, con **confirmación de asistencia, control de cupos y correos automáticos**. Usada en un evento real con **151 invitados confirmados**.
 
-🔗 **Demo en vivo:** https://andre1609.github.io/quince-valentina/
-> Nota: el evento ya se realizó, por lo que el formulario está cerrado en la versión pública.
+🔗 **Sitio en vivo:** https://andre1609.github.io/quince-valentina/
+> El evento ya se realizó, por lo que el formulario está cerrado en la versión pública.
+
+🧪 **Probar la invitación en modo demo:** https://andre1609.github.io/quince-valentina/?demo=true
+> En modo demo el contador corre hacia una fecha ficticia (2030) y el formulario guarda en una tabla de prueba. Usa tu propio correo: recibirás el correo de confirmación real.
 
 ![Portada](./docs/portada.jpeg)
 
@@ -16,6 +19,7 @@ Invitación web interactiva para unos XV años, con **confirmación de asistenci
 - **Límite de 160 cupos**: al llegar al tope, el formulario se cierra automáticamente
 - **Correo de confirmación** inmediato al registrarse
 - **Recordatorio automático** el día del evento
+- **Modo demo** con tabla separada, para probar sin afectar datos reales
 - Diseño responsive (móvil y escritorio)
 
 ## 🛠️ Stack
@@ -47,18 +51,23 @@ flowchart LR
 
 | Reto | Solución |
 |---|---|
-| Filtrar duplicados sin exponer datos | Pasé la validación del navegador a una restricción `UNIQUE` en el email, y el error `23505` se muestra como mensaje amigable |
-| Fuga de datos de invitados | Eliminé la lectura pública de la tabla con **RLS**; solo se permite `INSERT` al rol `anon` |
+| Filtrar duplicados sin exponer datos | Validación movida del navegador a una restricción `UNIQUE` en el email; el error `23505` se muestra como mensaje amigable |
+| Fuga de datos de invitados | Lectura pública eliminada con **RLS**; solo se permite `INSERT` al rol `anon` |
 | Mostrar el cupo sin leer la tabla | Función SQL `get_total_confirmados()` con `SECURITY DEFINER` que devuelve solo un número |
-| Correos en spam (DMARC) | Mailjet con remitente Gmail caía en spam; migré el envío a EmailJS, que usa los servidores de Gmail |
+| Correos en spam (DMARC) | Mailjet con remitente Gmail caía en spam; se migró el envío a EmailJS, que usa los servidores de Gmail |
 | Recordatorio sin intervención manual | Edge Function con validación de fecha, programada con `pg_cron` y marcada con `recordatorio_enviado` para evitar duplicados |
 | Pausa por inactividad del plan gratuito | Workflow de GitHub Actions que consulta la base cada 3 días |
+| Probar sin tocar datos reales | Modo demo con `?demo=true`: tabla `confirmaciones_demo` y fecha de evento ficticia |
 
 ## 📸 Capturas
 
-| Sobre | Cuenta regresiva | Formulario | Correo |
-|---|---|---|---|
-| <img src="./docs/portada.jpeg" width="180"> | <img src="./docs/contador.jpeg" width="180"> | <img src="./docs/formulario.jpeg" width="180"> | <img src="./docs/correo.jpeg" width="180"> |
+| Sobre | Cuenta regresiva | Formulario | Correo | Muestra de tabla |
+|---|---|---|---|---|
+| <img src="./docs/portada.jpeg" width="150"> | <img src="./docs/contador.jpeg" width="150"> | <img src="./docs/formulario.jpeg" width="150"> | <img src="./docs/correo.jpeg" width="150"> | <img src="./docs/tabla.jpeg" width="150"> |
+
+### Base de datos
+
+<img src="./docs/tabla.jpeg" width="600">
 
 ## 📊 Resultados
 
@@ -73,7 +82,10 @@ npm install
 npm run dev
 ```
 
-Crea un `.env` con tus propias credenciales de Supabase y EmailJS. Para ver el contador antes del evento: `?fecha=2026-09-10T12:00:00`.
+Crea un `.env` con tus propias credenciales de Supabase y EmailJS.
+
+- Modo demo: `?demo=true`
+- Simular una fecha en el contador: `?fecha=2026-09-10T12:00:00`
 
 ## 📝 Aprendizajes
 
